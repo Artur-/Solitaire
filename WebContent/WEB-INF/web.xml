@@ -10,11 +10,11 @@
 	<servlet>
 		<servlet-name>Solitaire</servlet-name>
 		<servlet-class>
-		com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin application class to start</description>
-			<param-name>root</param-name>
+			<param-name>ui</param-name>
 			<param-value>org.vaadin.artur.solitaire.Solitaire</param-value>
 		</init-param>
 		<init-param>
