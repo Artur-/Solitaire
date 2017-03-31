@@ -9,12 +9,15 @@ import org.vaadin.artur.playingcards.CardContainer;
 import org.vaadin.artur.playingcards.CardPile;
 import org.vaadin.artur.playingcards.CardStack;
 import org.vaadin.artur.playingcards.Deck;
-import org.vaadin.artur.playingcards.client.criteria.AcceptCardWithColor;
-import org.vaadin.artur.playingcards.client.criteria.AcceptCardWithRank;
-import org.vaadin.artur.playingcards.client.criteria.AcceptCardWithSuite;
+import org.vaadin.artur.playingcards.criteria.AcceptCardWithColor;
+import org.vaadin.artur.playingcards.criteria.AcceptCardWithRank;
+import org.vaadin.artur.playingcards.criteria.AcceptCardWithSuite;
 import org.vaadin.artur.playingcards.client.ui.Suite.Color;
 
+import javax.servlet.annotation.WebServlet;
+
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.MouseEvents.ClickEvent;
@@ -27,6 +30,7 @@ import com.vaadin.event.dd.acceptcriteria.And;
 import com.vaadin.event.dd.acceptcriteria.ClientSideCriterion;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
@@ -38,6 +42,12 @@ import com.vaadin.ui.VerticalLayout;
 
 @Theme("solitaire")
 public class Solitaire extends UI {
+
+        @WebServlet(value = "/*", asyncSupported = true)
+        @VaadinServletConfiguration(productionMode = false, ui = Solitaire.class)
+        public static class Servlet extends VaadinServlet {
+        }
+
 
 	private Deck deck;
 	private CardPile deckPile;
@@ -448,6 +458,7 @@ public class Solitaire extends UI {
 
 		VerticalLayout wrapperLayout = new VerticalLayout();
 
+		wrapperLayout.setMargin(false);
 		wrapperLayout.setSizeFull();
 		wrapperLayout.setSpacing(true);
 		wrapperLayout.addComponent(menu);
