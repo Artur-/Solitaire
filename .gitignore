@@ -3,3 +3,6 @@
 .project
 target
 *~
+styles.scss.cache
+src/main/frontend
+src/main/webapp/VAADIN/frontend
