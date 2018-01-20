@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.vaadin.artur.playingcards.Card;
-import org.vaadin.artur.playingcards.CardInfo;
-import org.vaadin.artur.playingcards.CardPile;
-import org.vaadin.artur.playingcards.CardStack;
-import org.vaadin.artur.playingcards.Deck;
+import org.vaadin.artur.gamecard.Card;
+import org.vaadin.artur.gamecard.CardPile;
+import org.vaadin.artur.gamecard.CardStack;
+import org.vaadin.artur.gamecard.Deck;
+import org.vaadin.artur.gamecard.data.CardInfo;
 
-import com.vaadin.ui.Component;
+import com.vaadin.flow.component.Component;
 
 public class GameController {
 
@@ -146,7 +146,7 @@ public class GameController {
                 removeCard(componentWithSelectedCard.get(), selectedCard);
             }
             deselectAll();
-        } else {
+        } else if (!clickedStack.isEmpty()) {
             // Not a valid move: deselect if clicked on the selected card,
             // otherwise select what was clicked on
             deselectAll();

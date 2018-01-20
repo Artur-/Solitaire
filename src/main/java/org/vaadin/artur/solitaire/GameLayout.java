@@ -1,16 +1,43 @@
 package org.vaadin.artur.solitaire;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.vaadin.artur.playingcards.Card;
-import org.vaadin.artur.playingcards.CardPile;
-import org.vaadin.artur.playingcards.CardStack;
+import org.vaadin.artur.gamecard.Card;
+import org.vaadin.artur.gamecard.CardPile;
+import org.vaadin.artur.gamecard.CardStack;
+import org.vaadin.artur.gamecard.Deck;
 
-public class GameLayout extends GameLayoutDesign {
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+
+public class GameLayout extends Div {
+    protected Deck deck = new Deck();
+    protected CardPile deckPile = new CardPile();
+
+    protected CardPile[] finalPiles = new CardPile[4];
+    protected CardStack[] stacks = new CardStack[7];
 
     public GameLayout() {
+        HorizontalLayout topLayout = new HorizontalLayout();
+        HorizontalLayout bottomLayout = new HorizontalLayout();
+
+        for (int i = 0; i < finalPiles.length; i++) {
+            finalPiles[i] = new CardPile();
+        }
+        for (int i = 0; i < stacks.length; i++) {
+            stacks[i] = new CardStack();
+        }
+        Div spacer = new Div();
+        spacer.setWidth(Card.WIDTH + "px");
+
+        deck.getElement().getStyle().set("width", Card.WIDTH + "px");
+        deck.getElement().getStyle().set("height", Card.HEIGHT + "px");
+
+        topLayout.add(deck, deckPile, spacer);
+        topLayout.add(finalPiles);
+        bottomLayout.add(stacks);
+        add(topLayout, bottomLayout);
     }
 
     public void setController(GameController gameController) {
@@ -18,40 +45,39 @@ public class GameLayout extends GameLayoutDesign {
             gameController.deckClick();
         });
         deckPile.addClickListener(e -> {
-            if (e.isDoubleClick()) {
-                gameController.deckPileDoubleClick(deckPile);
-            } else {
-                gameController.deckPileClick(deckPile);
-            }
+            gameController.deckPileClick(deckPile);
         });
-        getFinalPiles().forEach(pile -> {
-            pile.addClickListener(e -> {
-                gameController.finalPileClick((CardPile) e.getComponent());
+        deckPile.addDoubleClickListener(e -> {
+            gameController.deckPileDoubleClick(deckPile);
+        });
+
+        for (int i = 0; i < finalPiles.length; i++) {
+            CardPile finalPile = finalPiles[i];
+            finalPile.addClickListener(e -> {
+                gameController.finalPileClick(finalPile);
             });
-        });
-        getStacks().forEach(stack -> {
-            stack.addLayoutClickListener(e -> {
-                if (e.isDoubleClick()) {
-                    gameController.stackDoubleClick(
-                            (CardStack) e.getComponent().getParent(),
-                            (Card) e.getChildComponent());
-                } else {
-                    gameController.stackClick(
-                            (CardStack) e.getComponent().getParent(),
-                            (Card) e.getChildComponent());
+        }
+        for (int i = 0; i < stacks.length; i++) {
+            stacks[i].addClickListener(e -> {
+                if (e.getTarget() == null || !e.getTarget().isBacksideUp()) {
+                    gameController.stackClick(e.getSource(), e.getTarget());
                 }
             });
-        });
-    }
-
-    public List<CardStack> getStacks() {
-        return Stream.of(stack1, stack2, stack3, stack4, stack5, stack6, stack7)
-                .collect(Collectors.toList());
+            stacks[i].addDoubleClickListener(e -> {
+                if (e.getTarget() == null || !e.getTarget().isBacksideUp()) {
+                    gameController.stackDoubleClick(e.getSource(),
+                            e.getTarget());
+                }
+            });
+        }
     }
 
     public List<CardPile> getFinalPiles() {
-        return Stream.of(pile1, pile2, pile3, pile4)
-                .collect(Collectors.toList());
+        return Arrays.asList(finalPiles);
+    }
+
+    public List<CardStack> getStacks() {
+        return Arrays.asList(stacks);
     }
 
 }
