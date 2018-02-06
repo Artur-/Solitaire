@@ -10,8 +10,9 @@ import org.vaadin.artur.gamecard.Deck;
 
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-public class GameLayout extends Div {
+public class GameLayout extends VerticalLayout {
     protected Deck deck = new Deck();
     protected CardPile deckPile = new CardPile();
 
@@ -19,8 +20,11 @@ public class GameLayout extends Div {
     protected CardStack[] stacks = new CardStack[7];
 
     public GameLayout() {
+        setSpacing(true);
         HorizontalLayout topLayout = new HorizontalLayout();
         HorizontalLayout bottomLayout = new HorizontalLayout();
+        topLayout.setSpacing(true);
+        bottomLayout.setSpacing(true);
 
         for (int i = 0; i < finalPiles.length; i++) {
             finalPiles[i] = new CardPile();
