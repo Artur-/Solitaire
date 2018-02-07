@@ -2,6 +2,7 @@ package org.vaadin.artur.solitaire;
 
 import org.vaadin.artur.github_corner.GitHubCorner;
 
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Div;
@@ -34,6 +35,8 @@ public class MainView extends Div {
         HorizontalLayout conf = new HorizontalLayout(startOver, drawThree);
         add(conf);
         add(gameLayout);
+        add(new Text(
+                "Drag'n'drop not currently supported. Click to move cards."));
         gameController.deal();
 
     }
