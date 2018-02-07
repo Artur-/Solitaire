@@ -1,5 +1,7 @@
 package org.vaadin.artur.solitaire;
 
+import org.vaadin.artur.github_corner.GitHubCorner;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Div;
@@ -15,6 +17,7 @@ public class MainView extends Div {
 
     public MainView() {
         super();
+        add(new GitHubCorner("Artur-", "Solitaire"));
         GameLayout gameLayout = new GameLayout();
         gameController = new GameController(gameLayout);
 
