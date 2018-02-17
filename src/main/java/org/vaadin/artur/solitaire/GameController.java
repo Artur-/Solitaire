@@ -128,16 +128,21 @@ public class GameController {
     public void stackClick(CardStack clickedStack, Card clickedCard) {
         List<CardInfo> selectedCards = getSelectedCards();
         CardInfo firstSelected = getFirstSelectedCard();
-        // Move the selected card(s) to this stack if thye are suitable cards
+        // Move the selected card(s) to this stack if they are suitable cards
         boolean validMove = false;
-        if (firstSelected != null
-                && !clickedStack.containsCard(firstSelected)) {
-            if (!clickedStack.isEmpty() && firstSelected
-                    .isOtherColorAndOneRankLower(clickedCard.getCardInfo())) {
-                validMove = true;
-            } else if (clickedStack.isEmpty()
-                    && firstSelected.getRank() == 13) {
-                validMove = true;
+        if (firstSelected != null) {
+            if (clickedStack.isEmpty()) {
+                if (firstSelected.getRank() == 13) {
+                    validMove = true;
+                }
+            } else if (firstSelected != null) {
+                CardInfo lastInStack = clickedStack.getTopCard().getCardInfo();
+                if (!clickedStack.containsCard(firstSelected) && firstSelected
+                        .isOtherColorAndOneRankLower(lastInStack)) {
+                    // Different stack than selection
+                    // + matches last card in new stack
+                    validMove = true;
+                }
             }
         }
         if (validMove) {
